@@ -1,0 +1,162 @@
+SELECT * FROM tb_seller;
+
+SELECT id, LOWER(name) FROM tb_seller;
+
+SELECT id, UPPER(name) FROM tb_seller;
+
+SELECT id, name FROM tb_seller WHERE LOWER(name) LIKE 'mar%';
+
+SELECT id, name FROM tb_seller WHERE UPPER(name) LIKE 'MAR%';
+
+SELECT ROUND(10.456, 2);
+SELECT ROUND(10.456, 1);
+
+SELECT id, date, ROUND(CAST(price AS numeric), 2), quantity FROM tb_sale;
+
+SELECT id, date, ROUND(CAST(price AS numeric), 1), quantity FROM tb_sale;
+
+SELECT id, date, price, CAST(EXTRACT(DAY FROM date) AS int) AS dia FROM tb_sale;
+
+SELECT id, date, price, CAST(EXTRACT(MONTH FROM date) AS int) AS mes FROM tb_sale;
+
+SELECT id, date, price, CAST(EXTRACT(YEAR FROM date) AS int) AS ano FROM tb_sale;
+
+SELECT id, date, price, CAST(EXTRACT(YEAR FROM date) AS int) AS ano FROM tb_sale WHERE EXTRACT(DAY FROM date) = 18;
+
+SELECT id, date, price, CAST(EXTRACT(YEAR FROM date) AS int) AS ano FROM tb_sale WHERE EXTRACT(YEAR FROM date) = 2022 AND EXTRACT(MONTH FROM date) = 5;
+
+SELECT CONCAT('lala', 'lele', 'lolo');
+
+SELECT *, CONCAT(EXTRACT(MONTH FROM date), '/', EXTRACT(YEAR FROM date)) AS mes_ano FROM tb_sale;
+
+SELECT id, price,
+CASE
+	WHEN price < 500 THEN 'Barata'
+	ELSE 'Cara'
+END	AS classificacao
+FROM tb_sale;
+
+SELECT id, price,
+CASE
+	WHEN price <= 400 THEN 'Barata'
+	WHEN price <= 800 THEN 'Media'
+	ELSE 'Cara'
+END	AS classificacao
+FROM tb_sale;
+
+SELECT *, 
+CASE
+	WHEN EXTRACT(MONTH FROM date) >= 10 THEN CONCAT(EXTRACT(MONTH FROM date), '/', EXTRACT(YEAR FROM date)) 
+	ELSE CONCAT('0', EXTRACT(MONTH FROM date), '/', EXTRACT(YEAR FROM date)) 
+END AS mes_ano 
+FROM tb_sale;
+
+SELECT REPLACE('Maria Silva Silveira', 'Sil', 'XYZ');
+
+SELECT id, name, REPLACE(name, 'Silva', 'SILVA')
+FROM tb_seller;
+
+SELECT id, name, CHAR_LENGTH(name)
+FROM tb_seller;
+
+SELECT MD5('nelio123');
+SELECT MD5('Polly@27');
+SELECT *, MD5(name) FROM tb_seller;
+
+SELECT COUNT(id) FROM tb_sale WHERE price > 500;
+
+SELECT SUM(price) FROM tb_sale WHERE price > 500;
+
+SELECT AVG(price) FROM tb_sale WHERE price > 500;
+
+SELECT MIN(price) FROM tb_sale WHERE price > 500;
+
+SELECT MAX(price) FROM tb_sale WHERE price > 500;
+
+SELECT * FROM tb_sale INNER JOIN tb_seller ON tb_seller.id = tb_sale.seller_id WHERE price > 500;
+
+SELECT tb_seller.id, tb_seller.name FROM tb_sale INNER JOIN tb_seller ON tb_seller.id = tb_sale.seller_id WHERE price > 500;
+
+SELECT DISTINCT tb_seller.id, name FROM tb_sale INNER JOIN tb_seller ON tb_seller.id = tb_sale.seller_id WHERE price > 500;
+
+SELECT * FROM tb_sale;
+
+SELECT * FROM tb_sale ORDER BY price;
+
+SELECT * FROM tb_sale ORDER BY price DESC;
+
+SELECT * FROM tb_sale ORDER BY price ASC;
+
+SELECT * FROM tb_sale ORDER BY seller_id, price;
+
+SELECT * FROM tb_sale ORDER BY seller_id, price DESC;
+
+SELECT * FROM tb_sale ORDER BY price DESC LIMIT 3;
+
+SELECT price FROM tb_sale ORDER BY price DESC LIMIT 1;
+
+SELECT * FROM tb_sale ORDER BY price DESC LIMIT 3 OFFSET 3;
+
+SELECT * FROM tb_sale ORDER BY price DESC LIMIT 2 OFFSET 2;
+
+SELECT date, COUNT(date) FROM tb_sale GROUP BY date;
+
+SELECT * FROM tb_sale;
+
+SELECT date, SUM(price) AS total_vendido FROM tb_sale GROUP BY date;
+
+SELECT * FROM tb_sale INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id;
+
+SELECT tb_seller.name, ROUND(CAST(SUM(price) AS numeric), 2) FROM tb_sale INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id GROUP BY tb_seller.name;
+
+SELECT tb_seller.name, ROUND(CAST(SUM(price * quantity) AS numeric), 2) FROM tb_sale INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id GROUP BY tb_seller.name;
+
+SELECT date, name 
+FROM (
+	SELECT * FROM tb_sale INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id
+) AS juncao
+WHERE price < 500;
+
+SELECT * FROM tb_sale WHERE price > 800;
+
+SELECT * FROM tb_sale INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id WHERE name = 'Joaquim Silva Borges';
+
+
+SELECT id, date FROM tb_sale WHERE price > 800;
+
+SELECT tb_sale.id, date FROM tb_sale INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id WHERE name = 'Joaquim Silva Borges';	
+
+SELECT id, date FROM tb_sale WHERE price > 800
+UNION
+SELECT tb_sale.id, date FROM tb_sale INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id WHERE name = 'Joaquim Silva Borges';	
+
+SELECT * FROM (
+	SELECT id, date 
+	FROM tb_sale 
+	WHERE price > 800
+	
+	UNION
+	
+	SELECT tb_sale.id, date 
+	FROM tb_sale 
+	INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id 
+	WHERE name = 'Joaquim Silva Borges'	) AS uniao
+ORDER BY id	
+
+SELECT * FROM (
+	SELECT id, date 
+	FROM tb_sale 
+	WHERE price > 800
+	
+	UNION ALL
+	
+	SELECT tb_sale.id, date 
+	FROM tb_sale 
+	INNER JOIN tb_seller ON tb_sale.seller_id = tb_seller.id 
+	WHERE name = 'Joaquim Silva Borges'	) AS uniao
+ORDER BY id	
+
+
+
+
+
