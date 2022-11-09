@@ -1,0 +1,45 @@
+SELECT 
+	
+	tb_matricula.turma_id AS turma, 
+	tb_aluno.nome AS aluno,
+	tb_matricula.aluno_id AS CPF
+FROM tb_matricula
+INNER JOIN tb_aluno ON tb_aluno.cpf = tb_matricula.aluno_id
+
+
+INNER JOIN tb_curso ON tb_curso.id = tb_turma.curso_id
+INNER JOIN tb_curso ON tb_curso.id = tb_turma.curso_id
+INNER JOIN tb_aluno ON tb_aluno.cpf = tb_matricula.aluno_id
+tb_curso.nome AS curso, 
+tb_aluno.cpf AS cpf
+***********************************************************************************
+
+SELECT 
+	tb_curso.nome AS curso,
+	tb_aluno.nome AS aluno,
+	tb_matricula.aluno_id AS CPF
+FROM tb_matricula
+INNER JOIN tb_curso ON tb_curso.id = tb_matricula.turma_id
+INNER JOIN tb_aluno ON tb_aluno.cpf = tb_matricula.aluno_id
+
+**********************************************************************************
+SELECT 
+	tb_curso.nome AS curso,
+	tb_aluno.nome AS aluno,
+	tb_matricula.aluno_id AS CPF
+FROM tb_matricula
+INNER JOIN tb_curso ON tb_curso.id = tb_matricula.turma_id
+INNER JOIN tb_aluno ON tb_aluno.cpf = tb_matricula.aluno_id
+
+SELECT 
+	tb_aluno.nome AS aluno,
+	tb_matricula.aluno_id AS CPF
+FROM tb_matricula
+INNER JOIN tb_aluno ON tb_aluno.cpf = tb_matricula.aluno_id
+
+**********************************************************************************
+SELECT tb_turma.numero, tb_aluno.nome
+FROM tb_turma
+WHERE tb_turma.numero = 10
+INNER JOIN tb_aluno ON tb_aluno.id = tb_matricula
+

@@ -1,0 +1,54 @@
+-- QUESTÃO 1: nome do curso, número e data de início de cada turma de cada curso.
+SELECT 
+	tb_curso.nome AS curso, 
+	tb_turma.numero AS turma, 
+	tb_turma.inicio 
+FROM tb_turma
+INNER JOIN tb_curso ON tb_curso.id = tb_turma.curso_id;
+
+--QUESTÃO 2: nome do curso, número da turma, nome e CPF dos alunos de cada curso e
+--cada turma. Os nomes das colunas devem ser curso, turma, aluno e cpf, conforme exemplo.
+
+SELECT * FROM tb_matricula;
+
+SELECT 
+	tb_curso.nome AS curso,
+	tb_turma.numero AS turma, 
+	tb_aluno.nome AS aluno,
+	tb_matricula.aluno_id AS CPF
+FROM tb_matricula
+INNER JOIN tb_aluno ON tb_aluno.cpf = tb_matricula.aluno_id
+INNER JOIN tb_turma ON tb_turma.id = tb_matricula.turma_id
+INNER JOIN tb_curso ON tb_curso.id = tb_turma.curso_id;
+
+--QUESTÃO 3: listagem de data e nota de todas avaliações já ocorridas, juntamente com
+--nome, nota obtida por cada aluno em cada avaliação, e também qual a porcentagem de
+--nota obtida em relação à nota da avaliação. Os resultados devem estar ordenados da
+--avaliação mais recente para a mais antiga, e, para cada avaliação, os nomes dos alunos
+--devem estar ordenados em ordem crescente. A porcentagem deve ter duas casas decimais.
+
+SELECT 
+	tb_avaliacao.data,
+	tb_avaliacao.nota,
+	tb_aluno.nome,
+	tb_resultado.nota_obtida,
+	ROUND((tb_resultado.nota_obtida * 100) / tb_avaliacao.nota, 2) AS porcentagem
+	
+FROM tb_resultado
+INNER JOIN tb_avaliacao ON tb_avaliacao.id = tb_resultado.avaliacao_id 
+INNER JOIN tb_aluno ON tb_aluno.cpf = tb_resultado.aluno_id
+ORDER BY tb_avaliacao.data DESC, tb_aluno.nome ASC
+
+
+--QUESTÃO 4: nome e nota total dos alunos da turma 10 (ATENÇÃO: você deve restringir a
+--turma pelo número 10 dela, e não pelo id 2).
+
+SELECT 
+	tb_aluno.nome AS aluno,
+	ROUND(SUM(tb_resultado.nota_obtida), 1) AS nota 
+FROM tb_aluno
+INNER JOIN tb_resultado ON tb_resultado.aluno_id = tb_aluno.cpf
+INNER JOIN tb_avaliacao ON tb_avaliacao.id = tb_resultado.avaliacao_id
+INNER JOIN tb_turma ON tb_turma.id = tb_avaliacao.turma_id
+WHERE tb_turma.numero = 10
+GROUP BY tb_aluno.nome;
