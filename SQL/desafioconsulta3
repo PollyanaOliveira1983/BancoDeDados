@@ -33,7 +33,6 @@ SELECT
 	tb_aluno.nome,
 	tb_resultado.nota_obtida,
 	ROUND((tb_resultado.nota_obtida * 100) / tb_avaliacao.nota, 2) AS porcentagem
-	
 FROM tb_resultado
 INNER JOIN tb_avaliacao ON tb_avaliacao.id = tb_resultado.avaliacao_id 
 INNER JOIN tb_aluno ON tb_aluno.cpf = tb_resultado.aluno_id
